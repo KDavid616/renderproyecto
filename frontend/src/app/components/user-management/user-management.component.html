@@ -1,0 +1,28 @@
+<div class="user-management">
+  <h2>Gestión de Usuarios</h2>
+  <div class="user-list">
+    <h1>Lista de Usuarios</h1>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.username }} - {{ user.role }}
+      </li>
+    </ul>
+  </div>
+  <div class="user-form">
+    <h3>{{ isEditMode ? 'Editar Usuario' : 'Registrar Usuario' }}</h3>
+    <form (ngSubmit)="isEditMode ? updateUser() : registerUser()">
+      <label for="username">Nombre de Usuario:</label>
+      <input type="text" id="username" [(ngModel)]="userForm.username" name="username" required>
+      
+      <label for="role">Rol:</label>
+      <select id="role" [(ngModel)]="userForm.role" name="role" required>
+        <option value="Admin">Admin</option>
+        <option value="Editor">Editor</option>
+        <option value="Viewer">Viewer</option>
+      </select>
+      
+      <button type="submit">{{ isEditMode ? 'Actualizar' : 'Registrar' }}</button>
+      <button type="button" (click)="cancelEdit()">Cancelar</button>
+    </form>
+  </div>
+</div>
