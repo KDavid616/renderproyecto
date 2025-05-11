@@ -8,27 +8,30 @@ class AuthService {
         return await bcrypt.hash(password, saltRounds);
     }
 
-    async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
-        return await bcrypt.compare(password, hashedPassword);
+    public async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
+        return bcrypt.compare(plainPassword, hashedPassword);
     }
 
-    generateToken(userId: string, role: string): string {
-        const payload = { id: userId, role: role };
-        const secret = process.env.JWT_SECRET || 'your_jwt_secret';
-        const options = { expiresIn: '1h' };
-        return jwt.sign(payload, secret, options);
+    public generateToken(userId: string, username: string, role: string): string {
+        const secretKey = 'your-secret-key'; // Cambia esto por tu clave secreta
+        return jwt.sign({ userId, username, role }, secretKey, { expiresIn: '1h' });
     }
 
-    async registerUser(username: string, password: string, role: string) {
+    async registerUser(username: string, email: string, password: string, role: string) {
+        console.log('Datos que se pasarán al modelo:', { username, email, password, role });
+
+        // Encripta la contraseña
         const hashedPassword = await this.hashPassword(password);
-        const newUser = new User({ username, password: hashedPassword, role });
+
+        // Crea un nuevo usuario
+        const newUser = new User({ username, email, password: hashedPassword, role });
         return await newUser.save();
     }
 
     async loginUser(username: string, password: string) {
         const user = await User.findOne({ username }) as IUser | null;
         if (user && await this.validatePassword(password, user.password)) {
-            const token = this.generateToken((user._id as unknown as string), user.role as string); // Ensure _id is treated as a string
+            const token = this.generateToken((user._id as unknown as string), user.username, user.role as string); // Ensure _id is treated as a string
             return { token, user };
         }
         throw new Error('Invalid credentials');

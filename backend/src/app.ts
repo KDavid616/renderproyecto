@@ -18,6 +18,12 @@ app.use(express.json());
 // Habilitar CORS
 app.use(cors());
 
+app.use((req, res, next) => {
+    console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+    console.log('Cuerpo de la solicitud:', req.body);
+    next();
+});
+
 // Registrar las rutas de usuarios con el prefijo /api/users
 app.use('/api/users', userRoutes);
 
