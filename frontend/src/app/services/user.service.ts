@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,15 +12,22 @@ export class UserService {
 
   // Obtener usuarios
   getUsers(): Observable<any[]> {
-    const headers = {
-        Authorization: `Bearer ${localStorage.getItem('token')}` // Envía el token en el encabezado
-    };
-    return this.http.get<any[]>('http://localhost:5000/api/users', { headers }); // Asegúrate de que la URL sea correcta
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<any[]>(this.apiUrl, { headers });
   }
 
   // Registrar un nuevo usuario
   registerUser(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post(this.apiUrl, userData, { headers });
   }
 
   // Actualizar un usuario existente
@@ -30,11 +37,18 @@ export class UserService {
 
   // Actualizar el rol de un usuario
   updateUserRole(userId: string, role: string): Observable<any> {
-    return this.http.put<any>(`http://localhost:5000/api/users/${userId}/role`, { role });
+    const token = localStorage.getItem('token'); // Obtén el token del almacenamiento local
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}` // Agrega el token al encabezado
+    });
+
+    return this.http.put(`${this.apiUrl}/${userId}/role`, { role }, { headers });
   }
 
   // Eliminar un usuario
   deleteUser(userId: string): Observable<any> {
     return this.http.delete<any>(`http://localhost:5000/api/users/${userId}`);
   }
+
+
 }

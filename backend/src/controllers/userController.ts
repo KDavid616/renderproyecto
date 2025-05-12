@@ -120,34 +120,36 @@ class UserController {
     }
 
     public async updateUserRole(req: Request, res: Response): Promise<void> {
-        try {
-            const { id } = req.params; // Obtén el ID del usuario desde los parámetros de la URL
-            const { role } = req.body; // Obtén el nuevo rol desde el cuerpo de la solicitud
+    try {
+        const { id } = req.params;
+        const { role } = req.body;
+        const requesterRole = req.body.role; // Este se establece en authMiddleware.ts
 
-            // Verifica que el rol esté presente
-            if (!role) {
-                res.status(400).json({ message: 'El campo "role" es obligatorio' });
-                return;
-            }
-
-            // Actualiza el rol del usuario
-            const updatedUser = await User.findByIdAndUpdate(
-                id,
-                { role },
-                { new: true } // Devuelve el usuario actualizado
-            );
-
-            if (!updatedUser) {
-                res.status(404).json({ message: 'Usuario no encontrado' });
-                return;
-            }
-
-            res.status(200).json({ message: 'Rol actualizado exitosamente', user: updatedUser });
-        } catch (error) {
-            console.error('Error al actualizar el rol del usuario:', error);
-            res.status(500).json({ message: 'Error al actualizar el rol del usuario', error });
+        if (!role) {
+            res.status(400).json({ message: 'El campo "role" es obligatorio' });
+            return;
         }
+
+        // Validar que un editor no pueda asignar rol admin
+    
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { role },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+            return;
+        }
+
+        res.status(200).json({ message: 'Rol actualizado exitosamente', user: updatedUser });
+    } catch (error) {
+        console.error('Error al actualizar el rol del usuario:', error);
+        res.status(500).json({ message: 'Error al actualizar el rol del usuario', error });
     }
+ }
+
 }
 
 export default UserController;

@@ -30,4 +30,9 @@ export class AuthService {
     const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el token JWT
     return payload.username; // Devuelve el nombre del usuario
   }
+
+  getToken(): string | null {
+  return localStorage.getItem('token'); // O sessionStorage si lo usas
+ }
+
 }
