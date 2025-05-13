@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:5000/api/users'; // Cambia esta URL si es necesario
+  private apiUrl = 'https://renderproyecto-q494.onrender.com/api/users'; // URL del backend en Render
 
   constructor(private http: HttpClient) {}
 
