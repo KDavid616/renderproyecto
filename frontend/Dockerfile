@@ -1,23 +1,26 @@
-FROM node:20
+# Etapa 1: Construir la aplicación Angular
+FROM node:20 AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# Instalar dependencias del proyecto
 RUN npm install
-
-# Instalar Angular CLI globalmente
-RUN npm install -g @angular/cli
 
 COPY . .
 
 # Configurar soporte para OpenSSL heredado
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-# Construir la aplicación Angular
 RUN npm run build
 
-EXPOSE 4200
+# Etapa 2: Servir la aplicación con Nginx
+FROM nginx:alpine
 
-CMD ["npm", "start"]
+# Copiar los archivos construidos al directorio de Nginx
+COPY --from=build /usr/src/app/dist/user-management-system /usr/share/nginx/html
+
+# Exponer el puerto 80 para servir la aplicación
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

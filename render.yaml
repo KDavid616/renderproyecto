@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: frontend
+    env: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    buildCommand: "" # No es necesario porque Docker se encarga de construir
+    startCommand: "" # Nginx manejará el inicio automáticamente
+    envVars:
+      - key: NODE_OPTIONS
+        value: "--openssl-legacy-provider"
