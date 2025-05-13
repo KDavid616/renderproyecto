@@ -3,6 +3,8 @@ import User from '../models/userModel';
 import authService from '../services/authService'; // Importa la instancia exportada
 
 class UserController {
+    private apiUrl = 'https://renderproyecto-q494.onrender.com/api/users'; // URL del backend en Render
+
     constructor() {
         // No necesitas inicializar authService aquí porque ya es una instancia
     }
