@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Habilitar CORS
 app.use(cors({
-    origin: 'http://localhost:4200', // Cambia esto por la URL de tu frontend si está en producción
+    origin: 'https://frontend-2k10.onrender.com', // URL del frontend en Render
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));

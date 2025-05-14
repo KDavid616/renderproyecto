@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/users/login'; // Cambia la URL según tu backend
+  private apiUrl = 'https://renderproyecto-q494.onrender.com/api/users/login'; // URL del backend en Render
 
   constructor(private http: HttpClient) {}
 
@@ -32,7 +32,6 @@ export class AuthService {
   }
 
   getToken(): string | null {
-  return localStorage.getItem('token'); // O sessionStorage si lo usas
- }
-
+    return localStorage.getItem('token'); // O sessionStorage si lo usas
+  }
 }

@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/userModel';
 
 class AuthService {
+    private apiUrl = 'https://renderproyecto-q494.onrender.com/api/users';
+
     async hashPassword(password: string): Promise<string> {
         const saltRounds = 10;
         return await bcrypt.hash(password, saltRounds);

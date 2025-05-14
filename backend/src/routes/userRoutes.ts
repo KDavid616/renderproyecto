@@ -10,7 +10,7 @@ router.post('/login', userController.login);
 router.get('/profile/:id', userController.getProfile);
 router.put('/profile/:id', userController.updateProfile);
 router.get('/history/:id', userController.getUserHistory);
-router.get('/', verifyToken, authorizeRoles('Admin', 'Editor', 'Viewer'), userController.getAllUsers); // Todos los roles pueden ver usuarios
+router.get('/', verifyToken, authorizeRoles('Admin', 'Editor', 'Viewer'), userController.getAllUsers);
 router.put('/:id/role', verifyToken, authorizeRoles('Admin', 'Editor'), userController.updateUserRole); // Solo Admin y Editor pueden cambiar roles
 router.post('/', verifyToken, authorizeRoles('Admin'), userController.register); // Solo Admin puede registrar usuarios
 router.delete('/:id', verifyToken, authorizeRoles('Admin'), userController.deleteUser); // Solo Admin puede eliminar usuarios
