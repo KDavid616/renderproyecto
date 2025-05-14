@@ -24,10 +24,7 @@ RUN npm run build
 # Etapa 2: Servir la aplicación con Nginx
 FROM nginx:alpine
 
-# Copiar los archivos construidos al directorio de Nginx
-COPY --from=build /usr/src/app/dist/user-management-system /usr/share/nginx/html
-
-# Exponer el puerto 80 para servir la aplicación
+COPY dist/user-management-system /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
